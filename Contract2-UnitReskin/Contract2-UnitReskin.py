@@ -5,7 +5,7 @@ pygame.init()
 screen = pygame.display.set_mode((480, 100))
 
 # func to measure distance between two colors
-def ColorDistance(color_one,color_two):
+def Color_Distance(color_one, color_two):
     # variables for getting RGB color values from each of the two colors
     red1 = color_one.r
     blue1 = color_one.b
@@ -18,8 +18,8 @@ def ColorDistance(color_one,color_two):
     return distance
 
 # func returns True if two colors are sufficiently close (within a certain tolerance)
-def CloseEnough(color_one,color_two):
-    if ColorDistance(color_one,color_two) < 150.0:
+def Close_Enough(color_one, color_two):
+    if Color_Distance(color_one, color_two) < 150.0:
         return True
     else:
         return False
@@ -43,7 +43,7 @@ def Unit_Reskin_Red(pic):
             # set variable for the color you want to contrast and compare
             color_check = color_unskinned
             # check the color of each pixel against unskinned color (the color that you want to change)
-            if CloseEnough(original_color,(color_check)):
+            if Close_Enough(original_color, color_check):
                 #if true, change those pixels to a new color
                 pic.set_at((x, y), color_red)
 
@@ -53,7 +53,7 @@ def Unit_Reskin_Green(pic):
         for x in xrange(0, 480):
             original_color = pic.get_at((x, y))
             color_check = color_red
-            if CloseEnough(original_color,(color_check)):
+            if Close_Enough(original_color, color_check):
                 pic.set_at((x, y), color_green)
 
 # func to reskin units from green to blue
@@ -62,7 +62,7 @@ def Unit_Reskin_Blue(pic):
         for x in xrange(0, 480):
             original_color = pic.get_at((x, y))
             color_check = color_green
-            if CloseEnough(original_color,(color_check)):
+            if Close_Enough(original_color, color_check):
                 pic.set_at((x, y), color_blue)
 
 # func to reskin units from blue to yellow
@@ -71,7 +71,7 @@ def Unit_Reskin_Yellow(pic):
         for x in xrange(0, 480):
             original_color = pic.get_at((x, y))
             color_check = color_blue
-            if CloseEnough(original_color,(color_check)):
+            if Close_Enough(original_color, color_check):
                 pic.set_at((x, y), color_yellow)
 
 # func to save each red unit in separate png files
@@ -118,26 +118,12 @@ def Save_Yellow():
         screen.blit(cropped, (0, 0))
         pygame.image.save(cropped, str(i + 1) + "_Yellow" + ".png")
 
-# main loop
-done = False
-while not done:
-    for event in pygame.event.get():
-        # close loop if window exited or esc button pressed
-        if event.type == pygame.QUIT:
-            done = True
-        if event.type == pygame.KEYDOWN and event.key == pygame.K_ESCAPE:
-            done = True
-        # run reskinning functions in order if mouse is clicked on screen
-        if event.type == pygame.MOUSEBUTTONDOWN:
-            Unit_Reskin_Red(pic)
-            Save_Red()
-            Unit_Reskin_Green(pic)
-            Save_Green()
-            Unit_Reskin_Blue(pic)
-            Save_Blue()
-            Unit_Reskin_Yellow(pic)
-            Save_Yellow()
-
-    screen.fill((255, 255, 255))
-    screen.blit(pic,(0,0))
-    pygame.display.flip()
+# call functions in order to reskin and save files
+Unit_Reskin_Red(pic)
+Save_Red()
+Unit_Reskin_Green(pic)
+Save_Green()
+Unit_Reskin_Blue(pic)
+Save_Blue()
+Unit_Reskin_Yellow(pic)
+Save_Yellow()
